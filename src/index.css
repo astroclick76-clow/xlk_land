@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-deep-black: #050505;
+  --color-electric-blue: #00D4FF;
+  --color-neon-purple: #7B2EFF;
+  --color-bright-cyan: #00FFF0;
+  --color-white: #FFFFFF;
+  --color-dark-surface: #0a0a0f;
+  --color-dark-card: #111118;
+  --color-dark-border: #1a1a2e;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #050505;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050505;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #7B2EFF;
+    border-radius: 3px;
+  }
+  ::selection {
+    background: rgba(0, 212, 255, 0.3);
+    color: #ffffff;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #00D4FF, #7B2EFF, #00FFF0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-cyan {
+    background: linear-gradient(135deg, #00D4FF, #00FFF0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glass {
+    background: rgba(10, 10, 15, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+  }
+  .glass-card {
+    background: rgba(17, 17, 24, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(123, 46, 255, 0.15);
+    transition: all 0.3s ease;
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+  }
+  .neon-glow-blue {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1);
+  }
+  .neon-glow-purple {
+    box-shadow: 0 0 20px rgba(123, 46, 255, 0.3), 0 0 40px rgba(123, 46, 255, 0.1);
+  }
+  .text-neon-blue {
+    color: #00D4FF;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  }
+  .text-neon-purple {
+    color: #7B2EFF;
+    text-shadow: 0 0 20px rgba(123, 46, 255, 0.5);
+  }
+}
