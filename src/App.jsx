@@ -1,13 +1,15 @@
 import ParticleBackground from './components/ParticleBackground'
 import Hero from './components/Hero'
-import About from './components/About'
-import Features from './components/Features'
+import QueEsXLK from './components/QueEsXLK'
+import Proyecto from './components/Proyecto'
+import Beneficios from './components/Beneficios'
 import Tokenomics from './components/Tokenomics'
+import Preventa from './components/Preventa'
 import Roadmap from './components/Roadmap'
-import Gallery from './components/Gallery'
-import Stats from './components/Stats'
+import MecanismoValor from './components/MecanismoValor'
+import VentajasBlockchain from './components/VentajasBlockchain'
 import FAQ from './components/FAQ'
-import Community from './components/Community'
+import Comunidad from './components/Comunidad'
 import Footer from './components/Footer'
 
 function App() {
@@ -16,14 +18,16 @@ function App() {
       <ParticleBackground />
       <div className="relative z-10">
         <Hero />
-        <About />
-        <Features />
+        <Proyecto />
+        <QueEsXLK />
+        <Beneficios />
         <Tokenomics />
+        <Preventa />
         <Roadmap />
-        <Gallery />
-        <Stats />
+        <MecanismoValor />
+        <VentajasBlockchain />
         <FAQ />
-        <Community />
+        <Comunidad />
         <Footer />
       </div>
     </div>

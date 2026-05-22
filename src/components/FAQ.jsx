@@ -4,28 +4,32 @@ import { ChevronDown } from 'lucide-react'
 
 const faqs = [
   {
-    q: 'What is XLK?',
-    a: 'XLK (Xelvatika) is a next-generation decentralized cryptocurrency designed to power the Xelvatika ecosystem. It enables fast, secure, and scalable transactions while offering real-world utility through loyalty rewards, governance, and frictionless payments.',
+    q: '¿Qué es XLK?',
+    a: 'XLK (Xelvatika) es el token utilitario oficial del ecosistema turístico Xelvatika en Yucatán. Permite obtener descuentos exclusivos, cashback, acceso a eventos VIP, gobernanza, staking y operaciones dentro del mercado P2P interno. Cada XLK equivale a 1 USD de crédito interno dentro del ecosistema.',
   },
   {
-    q: 'How can I buy XLK?',
-    a: 'XLK can be purchased through decentralized exchanges (DEX) after the initial DEX offering. Connect your wallet (MetaMask, Trust Wallet, etc.), swap BNB/ETH for XLK, and the tokens will be credited to your wallet. Detailed guides will be available on our official channels.',
+    q: '¿Cómo puedo comprar XLK?',
+    a: 'Puedes participar en nuestra preventa privada o preventa comunitaria con descuentos especiales. Conéctate con tu wallet (MetaMask, Trust Wallet), intercambia BNB/ETH por XLK y recibe tus tokens. Pronto estará disponible en exchanges descentralizados.',
   },
   {
-    q: 'Is liquidity locked?',
-    a: 'Yes, the liquidity pool will be locked for 5 years using a time-lock smart contract. This ensures the safety of funds and prevents rug-pull scenarios. The lock contract address and verification will be publicly available.',
+    q: '¿La liquidez está bloqueada?',
+    a: 'Sí, la liquidez estará bloqueada mediante un contrato inteligente time-lock. Esto garantiza la seguridad de los fondos y protege contra cualquier escenario de rug-pull. La dirección del contrato y la verificación serán públicas.',
   },
   {
-    q: 'Which blockchain does XLK use?',
-    a: 'XLK is built as a multi-chain token, initially launching on BNB Smart Chain (BEP-20) and Ethereum (ERC-20). Cross-chain bridges are planned for future expansion to other major networks.',
+    q: '¿En qué blockchain opera XLK?',
+    a: 'XLK es un token multi-chain, lanzándose inicialmente en BNB Smart Chain (BEP-20) y Ethereum (ERC-20). Se planean puentes cross-chain para futura expansión a otras redes principales.',
   },
   {
-    q: 'What is the roadmap?',
-    a: 'Our roadmap spans 6 phases: Project Creation, Token Launch, Community Growth, Exchange Listings, Ecosystem Expansion, and Global Adoption. Each phase builds on the previous, bringing us closer to a fully decentralized ecosystem.',
+    q: '¿Cuál es la hoja de ruta?',
+    a: 'Nuestra hoja de ruta tiene 4 fases principales: Venta Privada y Preventa, Wallet XLK y Staking, Marketplace y Fidelización, y finalmente DAO y Expansión Global. Cada fase acerca a Xelvatika a un ecosistema completamente descentralizado.',
   },
   {
-    q: 'Is XLK audited?',
-    a: 'Yes, our smart contracts undergo thorough audits by leading third-party security firms. Audit reports will be published on our website and GitHub for full transparency.',
+    q: '¿XLK está auditado?',
+    a: 'Sí, nuestros contratos inteligentes son auditados por firmas de seguridad líderes. Los informes de auditoría se publicarán en nuestro sitio web y GitHub para total transparencia.',
+  },
+  {
+    q: '¿Qué valor tiene cada XLK?',
+    a: 'Cada XLK equivale a 1 USD de crédito interno dentro del ecosistema Xelvatika. Esto significa que puedes usar tus tokens para pagar servicios en el complejo turístico al mismo valor que el dólar estadounidense.',
   },
 ]
 
@@ -44,9 +48,9 @@ export default function FAQ() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Frequently Asked <span className="text-gradient">Questions</span>
+            Preguntas <span className="text-gradient">Frecuentes</span>
           </h2>
-          <p className="text-gray-400 text-lg">Everything you need to know about XLK</p>
+          <p className="text-gray-400 text-lg">Todo lo que necesitas saber sobre XLK</p>
         </motion.div>
 
         <div className="space-y-3">

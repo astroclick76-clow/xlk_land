@@ -2,12 +2,30 @@ import { motion } from 'framer-motion'
 import { CheckCircle, Circle } from 'lucide-react'
 
 const phases = [
-  { phase: 'Phase 1', title: 'Project Creation', status: 'completed', desc: 'Concept development, team assembly, whitepaper creation, and initial funding.' },
-  { phase: 'Phase 2', title: 'Token Launch', status: 'completed', desc: 'Smart contract deployment, token generation event, and initial DEX offering.' },
-  { phase: 'Phase 3', title: 'Community Growth', status: 'active', desc: 'Community building, marketing campaigns, strategic partnerships, and airdrops.' },
-  { phase: 'Phase 4', title: 'Exchange Listings', status: 'pending', desc: 'Listings on centralized and decentralized exchanges, liquidity pool expansion.' },
-  { phase: 'Phase 5', title: 'Ecosystem Expansion', status: 'pending', desc: 'NFT marketplace, DeFi integrations, mobile wallet, and staking platform.' },
-  { phase: 'Phase 6', title: 'Global Adoption', status: 'pending', desc: 'Real-world utility, merchant adoption, cross-chain interoperability, and DAO governance.' },
+  {
+    phase: 'Fase 1',
+    title: 'Venta Privada y Preventa',
+    status: 'active',
+    desc: 'Venta privada y preventa comunitaria. Evento exclusivo para early adopters con descuentos especiales Hot Sale.',
+  },
+  {
+    phase: 'Fase 2',
+    title: 'Wallet XLK y Staking',
+    status: 'pending',
+    desc: 'Wallet XLK, pasarela de pagos, descuentos activos, primer evento para holders, Staking V1 e integración de comercios aliados.',
+  },
+  {
+    phase: 'Fase 3',
+    title: 'Marketplace y Fidelización',
+    status: 'pending',
+    desc: 'Marketplace P2P, programa de fidelización, beneficios por holding, Proof of Social y alianzas externas.',
+  },
+  {
+    phase: 'Fase 4',
+    title: 'DAO y Expansión Global',
+    status: 'pending',
+    desc: 'DAO, fondo de sostenibilidad, integración con plataformas de turismo y expansión del ecosistema global.',
+  },
 ]
 
 export default function Roadmap() {
@@ -23,9 +41,9 @@ export default function Roadmap() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient">Roadmap</span>
+            Hoja de <span className="text-gradient">Ruta</span>
           </h2>
-          <p className="text-gray-400 text-lg">Our journey to decentralized innovation</p>
+          <p className="text-gray-400 text-lg">Nuestro camino hacia la innovación descentralizada</p>
         </motion.div>
 
         <div className="relative">
@@ -37,7 +55,7 @@ export default function Roadmap() {
               initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
               className={`relative flex items-start gap-6 mb-12 md:mb-16 ${
                 i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
               }`}

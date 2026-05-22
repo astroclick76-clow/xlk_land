@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, Users, Home, Plane, Briefcase } from 'lucide-react'
+
+const images = import.meta.glob('/public/assets/images/*.png', { eager: true, query: '?url' })
 
 function DiscordIcon({ className }) {
   return (
@@ -32,26 +35,75 @@ const socials = [
   { icon: GithubIcon, label: 'GitHub', href: '#', color: 'hover:bg-gray-500/20 hover:border-gray-500/50 hover:text-gray-300' },
 ]
 
-export default function Community() {
+const audiencia = [
+  { icon: Briefcase, label: 'Inversionistas' },
+  { icon: Home, label: 'Familias' },
+  { icon: Plane, label: 'Viajeros' },
+  { icon: Users, label: 'Residentes' },
+  { icon: MessageCircle, label: 'Operadores Turísticos' },
+]
+
+export default function Comunidad() {
+  const [lifestyleImg, setLifestyleImg] = useState('')
+
+  useEffect(() => {
+    const imgKeys = Object.keys(images)
+    const lifestyle = imgKeys.find(k => k.includes('lifestyle'))
+    if (lifestyle) {
+      setLifestyleImg(images[lifestyle].default || images[lifestyle])
+    }
+  }, [])
+
   return (
-    <section id="community" className="relative py-24 md:py-32 px-4">
+    <section id="comunidad" className="relative py-24 md:py-32 px-4">
       <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-[#08080f] to-deep-black pointer-events-none" />
-      <div className="relative max-w-4xl mx-auto text-center">
+      <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Join the <span className="text-gradient">Community</span>
+            Únete a la <span className="text-gradient">Comunidad</span>
           </h2>
-          <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
-            Be part of the Xelvatika revolution. Connect with thousands of holders worldwide.
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Sé parte de la revolución Xelvatika. Conecta con miles de holders en todo el mundo.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {lifestyleImg && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative rounded-3xl overflow-hidden mb-12 group"
+          >
+            <img
+              src={lifestyleImg}
+              alt="Comunidad Xelvatika"
+              className="w-full h-[250px] md:h-[350px] object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-deep-black/70 via-deep-black/30 to-deep-black/70" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+              <p className="text-white text-2xl md:text-3xl font-bold mb-4">
+                Diseñado para <span className="text-gradient">todos</span>
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                {audiencia.map((a) => (
+                  <span key={a.label} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm border border-white/10">
+                    <a.icon size={14} />
+                    {a.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {socials.map((social, i) => (
             <motion.a
               key={social.label}
@@ -76,10 +128,10 @@ export default function Community() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-12 glass rounded-2xl p-8"
+          className="glass rounded-2xl p-8 text-center"
         >
-          <p className="text-gray-300 text-lg mb-2">Stay updated with the latest news</p>
-          <p className="text-gray-500 text-sm">Join our channels for announcements, airdrops, and community events.</p>
+          <p className="text-gray-300 text-lg mb-2">Mantente al día con las últimas noticias</p>
+          <p className="text-gray-500 text-sm">Únete a nuestros canales para anuncios, airdrops y eventos comunitarios.</p>
         </motion.div>
       </div>
     </section>

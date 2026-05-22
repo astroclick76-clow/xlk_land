@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 
 const links = [
-  { label: 'Whitepaper', href: '#' },
-  { label: 'Contact', href: '#' },
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Terms', href: '#' },
+  { label: 'Documento Ejecutivo', href: '#' },
+  { label: 'Contacto', href: '#' },
+  { label: 'Política de Privacidad', href: '#' },
+  { label: 'Términos', href: '#' },
 ]
 
 export default function Footer() {
@@ -56,7 +56,7 @@ export default function Footer() {
           className="mt-8 pt-8 border-t border-dark-border text-center"
         >
           <p className="text-gray-500 text-sm">
-            &copy; 2026 Xelvatika (XLK). All Rights Reserved.
+            &copy; 2026 Xelvatika (XLK). Todos los derechos reservados.
           </p>
         </motion.div>
       </div>
