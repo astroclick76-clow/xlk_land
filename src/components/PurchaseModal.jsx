@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   X,
@@ -38,11 +38,17 @@ export default function PurchaseModal({ isOpen, onClose, walletPublicKey, wallet
     reset,
   } = usePurchaseXLK()
 
+  const isIOS = useMemo(() => /iPhone|iPad|iPod/.test(navigator.userAgent), [])
+
   useEffect(() => {
     if (isOpen) reset()
-  }, [isOpen, reset])
+
+    console.log('[DEBUG] PurchaseModal - isOpen:', isOpen)
+    console.log('[DEBUG] PurchaseModal - iOS:', isIOS)
+  }, [isOpen, reset, isIOS])
 
   const handleAmountChange = (e) => {
+    console.log('[DEBUG] amount change:', e.target.value)
     const val = e.target.value
     if (val === '' || /^\d*\.?\d*$/.test(val)) {
       setAmount(val)
@@ -51,6 +57,13 @@ export default function PurchaseModal({ isOpen, onClose, walletPublicKey, wallet
 
   const handleQuickAmount = (val) => {
     setAmount(String(val))
+  }
+
+  const handleBackdropClick = (e) => {
+    if (e.target !== e.currentTarget) return
+    if (step === 'awaiting_confirmation' || step === 'sending') return
+    console.log('[DEBUG] backdrop click - closing modal')
+    onClose()
   }
 
   const handleBuy = () => {
@@ -62,6 +75,8 @@ export default function PurchaseModal({ isOpen, onClose, walletPublicKey, wallet
     if (step === 'awaiting_confirmation' || step === 'sending') return
     onClose()
   }
+
+  console.log('[DEBUG] PurchaseModal render - amount:', amount, 'step:', step, 'wallet:', walletPublicKey?.slice(0, 4))
 
   const isValid = usdNum > 0 && usdNum >= 10
 
@@ -82,7 +97,7 @@ export default function PurchaseModal({ isOpen, onClose, walletPublicKey, wallet
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
-          onClick={handleClose}
+          onClick={handleBackdropClick}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -91,6 +106,8 @@ export default function PurchaseModal({ isOpen, onClose, walletPublicKey, wallet
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="glass rounded-2xl max-w-lg w-full relative border border-electric-blue/20 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
           >
             {!isProcessing && step !== 'success' && (
               <button

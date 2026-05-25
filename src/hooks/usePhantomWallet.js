@@ -11,7 +11,7 @@ export default function usePhantomWallet() {
   const mobileOS = useMemo(() => getMobileOS(), [])
   const inPhantomApp = useMemo(() => isInPhantomApp(), [])
 
-  const phantomAvailable = isInPhantomApp()
+  const phantomAvailable = useMemo(() => isInPhantomApp(), [])
 
   const connect = useCallback(async () => {
     if (!phantomAvailable) {
