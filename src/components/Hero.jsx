@@ -6,7 +6,7 @@ const images = import.meta.glob('/public/assets/images/*.png', { eager: true, qu
 const videos = import.meta.glob('/public/assets/video/**/*.{mp4,webm,mov}', { eager: true, query: '?url' })
 
 const metrics = [
-  { icon: Trees, label: 'Hectáreas', value: '66' },
+  { icon: Trees, label: 'Hectáreas', value: '66.5' },
   { icon: Mountain, label: 'Parques Temáticos', value: '4' },
   { icon: Shield, label: 'XLK Máximo', value: '21M' },
   { icon: Users, label: 'Visitantes Diarios', value: '+1000' },
