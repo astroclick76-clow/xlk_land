@@ -8,8 +8,9 @@ import {
   Loader2,
   ArrowRight,
   AlertCircle,
-  Landmark,
 } from 'lucide-react'
+
+const bovedaImages = import.meta.glob('/public/assets/images/wallet_boveda*.{png,jpeg,jpg}', { eager: true, query: '?url' })
 import usePhantomWallet from '../hooks/usePhantomWallet'
 import usePurchaseXLK from '../hooks/usePurchaseXLK'
 import TransactionSuccess from './TransactionSuccess'
@@ -61,6 +62,8 @@ export default function PurchaseModal({ isOpen, onClose }) {
     amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0
 
   const usdNum = parseFloat(amount) || 0
+
+  const bovedaImgSrc = Object.values(bovedaImages)[0]?.default || Object.values(bovedaImages)[0] || null
 
   const isProcessing =
     step === 'preparing' ||
@@ -225,10 +228,18 @@ export default function PurchaseModal({ isOpen, onClose }) {
                 </div>
 
                 <div className="glass rounded-xl p-4 mb-6 border border-neon-purple/20">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shrink-0">
-                      <Landmark size={14} className="text-white" />
-                    </div>
+                  <div className="flex items-center gap-3 mb-3">
+                    {bovedaImgSrc ? (
+                      <img
+                        src={bovedaImgSrc}
+                        alt="Wallet Bóveda"
+                        className="w-10 h-10 rounded-lg object-cover shrink-0 border border-neon-purple/30"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shrink-0">
+                        <Wallet size={16} className="text-white" />
+                      </div>
+                    )}
                     <div>
                       <p className="text-xs font-semibold text-gray-300">
                         Wallet Oficial de Tesorería
