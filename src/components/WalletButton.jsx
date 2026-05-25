@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { ArrowRight, Loader2, Wallet } from 'lucide-react'
 import usePhantomWallet from '../hooks/usePhantomWallet'
+import { redirectToPhantom } from '../utils/phantomDeepLink'
 import WalletModal from './WalletModal'
 import PurchaseModal from './PurchaseModal'
 import Toast from './Toast'
@@ -41,6 +42,11 @@ export default function WalletButton() {
       if (result.success) {
         showToast('Wallet Phantom conectada correctamente', 'success')
       }
+      return
+    }
+
+    if (mobileOS === 'iOS') {
+      redirectToPhantom()
       return
     }
 

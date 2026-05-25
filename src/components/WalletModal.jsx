@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ExternalLink, Wallet, Smartphone } from 'lucide-react'
-import { getPhantomDeepLink } from '../utils/phantomDeepLink'
+import { getPhantomDeepLink, redirectToPhantom } from '../utils/phantomDeepLink'
 
 export default function WalletModal({ isOpen, onClose, mode = 'install', mobileOS = null }) {
   return (
@@ -109,15 +109,15 @@ function MobileDeepLinkContent({ mobileOS, onClose }) {
         continuar la compra.
       </p>
 
-      <a
-        href={deepLink}
+      <button
+        onClick={redirectToPhantom}
         className="group relative w-full px-6 py-3.5 bg-gradient-to-r from-electric-blue to-neon-purple rounded-full text-white font-semibold text-base overflow-hidden transition-all duration-300 hover:scale-105 neon-glow-blue mb-3 flex items-center justify-center gap-2"
       >
         <span className="relative z-10 flex items-center gap-2">
           Abrir en Phantom <ExternalLink size={18} />
         </span>
         <div className="absolute inset-0 bg-gradient-to-r from-neon-purple to-electric-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </a>
+      </button>
 
       <a
         href="https://phantom.com/"

@@ -9,3 +9,8 @@ export function isInPhantomApp() {
     window.phantom?.solana?.isPhantom === true
   )
 }
+
+export function redirectToPhantom() {
+  const deepLink = getPhantomDeepLink()
+  window.location.assign(deepLink)
+}
