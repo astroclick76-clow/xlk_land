@@ -25,7 +25,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
     amount,
     setAmount,
     xlkAmount,
-    result,
+    ticket,
     error,
     startPurchase,
     reset,
@@ -97,15 +97,9 @@ export default function PurchaseModal({ isOpen, onClose }) {
               </button>
             )}
 
-            {step === 'success' && result ? (
+            {step === 'success' && ticket ? (
               <div className="p-8">
-                <TransactionSuccess
-                  result={{
-                    ...result,
-                    wallet: publicKey,
-                  }}
-                  onClose={onClose}
-                />
+                <TransactionSuccess ticket={ticket} onClose={onClose} />
               </div>
             ) : step === 'error' ? (
               <div className="p-8 flex flex-col items-center text-center">

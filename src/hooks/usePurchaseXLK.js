@@ -6,11 +6,14 @@ import {
   signAndSendTx,
   confirmTx,
 } from '../utils/solanaTransaction'
+import { createTicketData } from '../utils/generateTicket'
+import { savePurchase } from '../utils/localStorage'
 
 export default function usePurchaseXLK() {
   const [step, setStep] = useState('idle')
   const [amount, setAmount] = useState('')
   const [result, setResult] = useState(null)
+  const [ticket, setTicket] = useState(null)
   const [error, setError] = useState(null)
   const [solPrice, setSolPrice] = useState(null)
   const [balance, setBalance] = useState(null)
@@ -19,24 +22,6 @@ export default function usePurchaseXLK() {
     const num = parseFloat(amount)
     return isNaN(num) || num < 0 ? 0 : num
   }, [amount])
-
-  const prepare = useCallback(async (publicKey) => {
-    setStep('preparing')
-    setError(null)
-    try {
-      const [price, bal] = await Promise.all([
-        getSOLPrice(),
-        getUserBalance(publicKey),
-      ])
-      setSolPrice(price)
-      setBalance(bal)
-      setStep('idle')
-    } catch (err) {
-      console.error('Error preparing purchase:', err)
-      setError('No fue posible preparar la compra')
-      setStep('error')
-    }
-  }, [])
 
   const startPurchase = useCallback(
     async (publicKey) => {
@@ -72,8 +57,7 @@ export default function usePurchaseXLK() {
 
         await confirmTx(signature)
 
-        setStep('success')
-        setResult({
+        const txData = {
           signature,
           solAmount: lamports / 1e9,
           solPrice,
@@ -81,15 +65,22 @@ export default function usePurchaseXLK() {
           xlkAmount: usdAmount,
           treasuryWallet: '8DrjcuEzciWwaV5xP3qdYQdA8JqJ9mK8garm3rVPcrbz',
           wallet: publicKey,
-        })
+        }
+
+        const ticketData = createTicketData(txData)
+        savePurchase(ticketData)
+
+        setResult(txData)
+        setTicket(ticketData)
+        setStep('success')
       } catch (err) {
         if (err.message === 'INSUFFICIENT_FUNDS') {
-          setError('Saldo insuficiente para realizar la compra')
+          setError('Fondos insuficientes para completar la compra')
         } else if (err.code === 4001) {
-          setError('Operación cancelada por el usuario')
+          setError('Transacción cancelada por el usuario')
         } else {
           console.error('Purchase error:', err)
-          setError('No fue posible completar la transacción')
+          setError('No fue posible procesar la operación. Intente nuevamente.')
         }
         setStep('error')
       }
@@ -101,6 +92,7 @@ export default function usePurchaseXLK() {
     setStep('idle')
     setAmount('')
     setResult(null)
+    setTicket(null)
     setError(null)
     setSolPrice(null)
     setBalance(null)
@@ -112,10 +104,10 @@ export default function usePurchaseXLK() {
     setAmount,
     xlkAmount,
     result,
+    ticket,
     error,
     solPrice,
     balance,
-    prepare,
     startPurchase,
     reset,
   }
