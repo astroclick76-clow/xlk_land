@@ -1,15 +1,20 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { isMobileDevice, getMobileOS } from '../utils/isMobileDevice'
+import { isInPhantomApp } from '../utils/phantomDeepLink'
 
 export default function usePhantomWallet() {
   const [publicKey, setPublicKey] = useState(null)
   const [status, setStatus] = useState('disconnected')
   const [error, setError] = useState(null)
 
-  const isPhantomInstalled = () =>
-    window.phantom?.solana?.isPhantom === true
+  const isMobile = useMemo(() => isMobileDevice(), [])
+  const mobileOS = useMemo(() => getMobileOS(), [])
+  const inPhantomApp = useMemo(() => isInPhantomApp(), [])
+
+  const phantomAvailable = isInPhantomApp()
 
   const connect = useCallback(async () => {
-    if (!isPhantomInstalled()) {
+    if (!phantomAvailable) {
       return { installed: false }
     }
 
@@ -17,7 +22,8 @@ export default function usePhantomWallet() {
     setError(null)
 
     try {
-      const response = await window.phantom.solana.connect()
+      const provider = window.phantom.solana
+      const response = await provider.connect()
       const pubKey = response.publicKey.toString()
       setPublicKey(pubKey)
       setStatus('connected')
@@ -32,10 +38,10 @@ export default function usePhantomWallet() {
       setStatus('disconnected')
       return { installed: true, success: false, error: err }
     }
-  }, [])
+  }, [phantomAvailable])
 
   const disconnect = useCallback(async () => {
-    if (isPhantomInstalled()) {
+    if (phantomAvailable) {
       try {
         await window.phantom.solana.disconnect()
       } catch (err) {
@@ -45,10 +51,10 @@ export default function usePhantomWallet() {
     setPublicKey(null)
     setStatus('disconnected')
     setError(null)
-  }, [])
+  }, [phantomAvailable])
 
   useEffect(() => {
-    if (!isPhantomInstalled()) return
+    if (!phantomAvailable) return
 
     window.phantom.solana
       .connect({ onlyIfTrusted: true })
@@ -80,7 +86,7 @@ export default function usePhantomWallet() {
       window.phantom.solana.removeListener('accountChanged', handleAccountChanged)
       window.phantom.solana.removeListener('disconnect', handleDisconnect)
     }
-  }, [])
+  }, [phantomAvailable])
 
   const abbreviateAddress = (address) => {
     if (!address) return ''
@@ -93,7 +99,10 @@ export default function usePhantomWallet() {
     error,
     connect,
     disconnect,
-    isPhantomInstalled: isPhantomInstalled(),
+    isPhantomInstalled: phantomAvailable,
+    isMobile,
+    mobileOS,
+    inPhantomApp,
     abbreviateAddress,
   }
 }

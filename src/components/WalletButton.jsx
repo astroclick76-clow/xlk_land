@@ -11,10 +11,13 @@ export default function WalletButton() {
     status,
     connect,
     isPhantomInstalled,
+    isMobile,
+    mobileOS,
     abbreviateAddress,
   } = usePhantomWallet()
 
-  const [showInstallModal, setShowInstallModal] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [modalMode, setModalMode] = useState('install')
   const [showPurchaseModal, setShowPurchaseModal] = useState(false)
   const [toast, setToast] = useState({ message: '', type: 'info', visible: false })
 
@@ -22,23 +25,29 @@ export default function WalletButton() {
     setToast({ message, type, visible: true })
   }, [])
 
+  const openModal = (mode) => {
+    setModalMode(mode)
+    setShowModal(true)
+  }
+
   const handleClick = async () => {
     if (status === 'connected') {
       setShowPurchaseModal(true)
       return
     }
 
-    if (!isPhantomInstalled) {
-      setShowInstallModal(true)
+    if (isPhantomInstalled) {
+      const result = await connect()
+      if (result.success) {
+        showToast('Wallet Phantom conectada correctamente', 'success')
+      }
       return
     }
 
-    const result = await connect()
-
-    if (result.success) {
-      showToast('Wallet Phantom conectada correctamente', 'success')
-    } else if (!result.installed) {
-      setShowInstallModal(true)
+    if (isMobile) {
+      openModal('mobile-deeplink')
+    } else {
+      openModal('install')
     }
   }
 
@@ -68,8 +77,10 @@ export default function WalletButton() {
       </button>
 
       <WalletModal
-        isOpen={showInstallModal}
-        onClose={() => setShowInstallModal(false)}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        mode={modalMode}
+        mobileOS={mobileOS}
       />
 
       <PurchaseModal
