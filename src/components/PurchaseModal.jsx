@@ -13,15 +13,13 @@ import {
 } from 'lucide-react'
 
 const bovedaImages = import.meta.glob('/public/assets/images/wallet_boveda*.{png,jpeg,jpg}', { eager: true, query: '?url' })
-import usePhantomWallet from '../hooks/usePhantomWallet'
 import usePurchaseXLK from '../hooks/usePurchaseXLK'
 import TransactionSuccess from './TransactionSuccess'
 import { TREASURY_WALLET } from '../utils/solanaTransaction'
 
 const QUICK_AMOUNTS = [50, 100, 250, 500, 1000]
 
-export default function PurchaseModal({ isOpen, onClose }) {
-  const { publicKey, abbreviateAddress } = usePhantomWallet()
+export default function PurchaseModal({ isOpen, onClose, walletPublicKey, walletAbbreviate }) {
   const {
     step,
     amount,
@@ -56,8 +54,8 @@ export default function PurchaseModal({ isOpen, onClose }) {
   }
 
   const handleBuy = () => {
-    if (!publicKey) return
-    startPurchase(publicKey)
+    if (!walletPublicKey) return
+    startPurchase(walletPublicKey)
   }
 
   const handleClose = () => {
@@ -163,7 +161,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
                   <p className="text-gray-400 text-sm">
                     Conectado como{' '}
                     <span className="text-electric-blue font-mono">
-                      {abbreviateAddress(publicKey)}
+                      {walletAbbreviate(walletPublicKey)}
                     </span>
                   </p>
                 </div>

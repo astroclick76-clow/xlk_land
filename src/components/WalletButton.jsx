@@ -86,6 +86,8 @@ export default function WalletButton() {
       <PurchaseModal
         isOpen={showPurchaseModal}
         onClose={() => setShowPurchaseModal(false)}
+        walletPublicKey={publicKey}
+        walletAbbreviate={abbreviateAddress}
       />
 
       <Toast
