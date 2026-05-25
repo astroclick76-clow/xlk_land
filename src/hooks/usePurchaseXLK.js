@@ -14,7 +14,6 @@ import { calculatePurchase } from '../utils/calculatePurchase'
 export default function usePurchaseXLK() {
   const [step, setStep] = useState('idle')
   const [amount, setAmount] = useState('')
-  const [result, setResult] = useState(null)
   const [ticket, setTicket] = useState(null)
   const [error, setError] = useState(null)
   const [solPrice, setSolPrice] = useState(null)
@@ -112,7 +111,6 @@ export default function usePurchaseXLK() {
         const ticketData = createTicketData(txData)
         savePurchase(ticketData)
 
-        setResult(txData)
         setTicket(ticketData)
         setStep('success')
       } catch (err) {
@@ -127,13 +125,12 @@ export default function usePurchaseXLK() {
         setStep('error')
       }
     },
-    [amount, purchaseCalc]
+    [amount, usdNum, purchaseCalc]
   )
 
   const reset = useCallback(() => {
     setStep('idle')
     setAmount('')
-    setResult(null)
     setTicket(null)
     setError(null)
     setSolPrice(null)
