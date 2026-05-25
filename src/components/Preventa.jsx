@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Timer, ArrowRight, ShieldCheck, Gift } from 'lucide-react'
+import { Timer, ShieldCheck, Gift } from 'lucide-react'
+import WalletButton from './WalletButton'
 
 export default function Preventa() {
   const [timeLeft, setTimeLeft] = useState({ days: 30, hours: 0, minutes: 0, seconds: 0 })
@@ -129,12 +130,7 @@ export default function Preventa() {
                 </div>
               ))}
             </div>
-            <button className="group relative px-10 py-4 bg-gradient-to-r from-electric-blue to-neon-purple rounded-full text-white font-bold text-lg overflow-hidden transition-all duration-300 hover:scale-105 neon-glow-blue">
-              <span className="relative z-10 flex items-center gap-2">
-                Participar en la Preventa <ArrowRight size={20} />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-neon-purple to-electric-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </button>
+            <WalletButton />
           </div>
         </motion.div>
       </div>
