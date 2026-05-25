@@ -8,6 +8,8 @@ import {
   Loader2,
   ArrowRight,
   AlertCircle,
+  Ticket,
+  Trash2,
 } from 'lucide-react'
 
 const bovedaImages = import.meta.glob('/public/assets/images/wallet_boveda*.{png,jpeg,jpg}', { eager: true, query: '?url' })
@@ -16,7 +18,7 @@ import usePurchaseXLK from '../hooks/usePurchaseXLK'
 import TransactionSuccess from './TransactionSuccess'
 import { TREASURY_WALLET } from '../utils/solanaTransaction'
 
-const QUICK_AMOUNTS = [50, 100, 500, 1000]
+const QUICK_AMOUNTS = [50, 100, 250, 500, 1000]
 
 export default function PurchaseModal({ isOpen, onClose }) {
   const { publicKey, abbreviateAddress } = usePhantomWallet()
@@ -24,17 +26,22 @@ export default function PurchaseModal({ isOpen, onClose }) {
     step,
     amount,
     setAmount,
-    xlkAmount,
+    usdNum,
+    purchaseCalc,
     ticket,
     error,
+    couponInput,
+    setCouponInput,
+    couponError,
+    couponApplied,
+    applyCoupon,
+    removeCoupon,
     startPurchase,
     reset,
   } = usePurchaseXLK()
 
   useEffect(() => {
-    if (isOpen) {
-      reset()
-    }
+    if (isOpen) reset()
   }, [isOpen, reset])
 
   const handleAmountChange = (e) => {
@@ -58,10 +65,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
     onClose()
   }
 
-  const isValid =
-    amount && !isNaN(parseFloat(amount)) && parseFloat(amount) > 0
-
-  const usdNum = parseFloat(amount) || 0
+  const isValid = usdNum > 0 && usdNum >= 10
 
   const bovedaImgSrc = Object.values(bovedaImages)[0]?.default || Object.values(bovedaImages)[0] || null
 
@@ -69,6 +73,8 @@ export default function PurchaseModal({ isOpen, onClose }) {
     step === 'preparing' ||
     step === 'awaiting_confirmation' ||
     step === 'sending'
+
+  const minAmountError = amount !== '' && usdNum > 0 && usdNum < 10
 
   return (
     <AnimatePresence>
@@ -106,9 +112,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
                 <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-4">
                   <AlertCircle className="w-8 h-8 text-red-400" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  Error en la compra
-                </h3>
+                <h3 className="text-xl font-bold text-white mb-2">Error en la compra</h3>
                 <p className="text-gray-400 text-sm mb-6">{error}</p>
                 <div className="flex gap-3">
                   <button
@@ -127,19 +131,14 @@ export default function PurchaseModal({ isOpen, onClose }) {
               </div>
             ) : isProcessing ? (
               <div className="p-8 flex flex-col items-center text-center">
-                <Loader2
-                  size={40}
-                  className="text-electric-blue animate-spin mb-4"
-                />
+                <Loader2 size={40} className="text-electric-blue animate-spin mb-4" />
                 <h3 className="text-lg font-bold text-white mb-2">
                   {step === 'preparing' && 'Preparando compra...'}
-                  {step === 'awaiting_confirmation' &&
-                    'Confirma la transacción desde Phantom Wallet'}
+                  {step === 'awaiting_confirmation' && 'Confirma la transacción desde Phantom Wallet'}
                   {step === 'sending' && 'Enviando transacción...'}
                 </h3>
                 <p className="text-gray-400 text-sm">
-                  {step === 'awaiting_confirmation' &&
-                    'Revisa la ventana de Phantom para firmar la transacción'}
+                  {step === 'awaiting_confirmation' && 'Revisa la ventana de Phantom para firmar la transacción'}
                 </p>
                 {step === 'awaiting_confirmation' && (
                   <motion.div
@@ -147,9 +146,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
                     transition={{ duration: 1.5, repeat: Infinity }}
                     className="mt-4 px-4 py-2 rounded-lg bg-electric-blue/5 border border-electric-blue/20"
                   >
-                    <span className="text-xs text-electric-blue">
-                      Esperando firma...
-                    </span>
+                    <span className="text-xs text-electric-blue">Esperando firma...</span>
                   </motion.div>
                 )}
               </div>
@@ -162,9 +159,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
                 </div>
 
                 <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-white mb-1">
-                    Comprar XLK
-                  </h3>
+                  <h3 className="text-xl font-bold text-white mb-1">Comprar XLK</h3>
                   <p className="text-gray-400 text-sm">
                     Conectado como{' '}
                     <span className="text-electric-blue font-mono">
@@ -173,7 +168,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
                   </p>
                 </div>
 
-                <div className="glass rounded-xl p-4 mb-4">
+                <div className="glass rounded-xl p-4 mb-3">
                   <label className="block text-xs uppercase tracking-wider text-gray-400 mb-2">
                     Monto a invertir (USD)
                   </label>
@@ -202,21 +197,84 @@ export default function PurchaseModal({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                <div className="glass rounded-xl p-4 mb-4 space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">
-                      Precio del Token
-                    </span>
-                    <span className="text-white font-semibold">
-                      1 XLK = 1 USD
+                <div className="glass rounded-xl px-4 py-3 mb-4">
+                  <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
+                    Monto personalizado
+                  </label>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    placeholder="Ingrese el monto que desea invertir"
+                    min="10"
+                    className="w-full bg-transparent text-white text-base outline-none placeholder-gray-600 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  {minAmountError && (
+                    <p className="text-red-400 text-xs mt-1">
+                      El monto mínimo de compra es 10 USD.
+                    </p>
+                  )}
+                </div>
+
+                <div className="glass rounded-xl p-4 mb-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Ticket size={14} className="text-neon-purple" />
+                    <span className="text-xs uppercase tracking-wider text-gray-400">
+                      Código promocional
                     </span>
                   </div>
+                  {couponApplied ? (
+                    <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-2.5">
+                      <div className="flex-1">
+                        <p className="text-green-400 text-xs font-semibold">
+                          ✓ Cupón aplicado correctamente
+                        </p>
+                        <p className="text-green-400/70 text-[11px]">
+                          Descuento del {purchaseCalc.discountPercent}% activado
+                        </p>
+                      </div>
+                      <button
+                        onClick={removeCoupon}
+                        className="text-gray-400 hover:text-red-400 transition-colors"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          placeholder="Ingrese su código de descuento"
+                          className="flex-1 bg-dark-border/50 border border-dark-border rounded-lg px-3 py-2 text-white text-sm outline-none placeholder-gray-500 focus:border-electric-blue/40 transition-colors"
+                          onKeyDown={(e) => e.key === 'Enter' && applyCoupon()}
+                        />
+                        <button
+                          onClick={applyCoupon}
+                          disabled={!couponInput.trim()}
+                          className="px-4 py-2 bg-electric-blue/20 border border-electric-blue/30 rounded-lg text-electric-blue text-xs font-semibold hover:bg-electric-blue/30 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          Aplicar
+                        </button>
+                      </div>
+                      {couponError && (
+                        <p className="text-red-400 text-xs mt-1.5">{couponError}</p>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                <div className="glass rounded-xl p-4 mb-4 space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">
-                      XLK estimados
-                    </span>
+                    <span className="text-gray-400 text-sm">Precio del Token</span>
+                    <span className="text-white font-semibold">1 XLK = 1 USD</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">XLK estimados</span>
                     <span className="text-gradient font-bold text-lg tabular-nums">
-                      {xlkAmount.toLocaleString()} XLK
+                      {purchaseCalc.xlkAmount.toLocaleString()} XLK
                     </span>
                   </div>
                 </div>
@@ -238,9 +296,7 @@ export default function PurchaseModal({ isOpen, onClose }) {
                       <p className="text-xs font-semibold text-gray-300">
                         Wallet Oficial de Tesorería
                       </p>
-                      <p className="text-[10px] text-gray-500">
-                        Fondo de bóveda oficial
-                      </p>
+                      <p className="text-[10px] text-gray-500">Fondo de bóveda oficial</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 bg-dark-border/50 rounded-lg px-3 py-2">
@@ -257,18 +313,19 @@ export default function PurchaseModal({ isOpen, onClose }) {
                       Resumen de compra
                     </p>
                     <div className="space-y-2">
-                      <Row
-                        label="Monto invertido"
-                        value={`$${usdNum.toLocaleString()} USD`}
-                      />
-                      <Row
-                        label="Cantidad estimada XLK"
-                        value={`${xlkAmount.toLocaleString()} XLK`}
-                      />
-                      <Row
-                        label="Wallet de destino"
-                        value={`${TREASURY_WALLET.slice(0, 4)}...${TREASURY_WALLET.slice(-4)}`}
-                      />
+                      <Row label="Monto original" value={`$${purchaseCalc.originalAmount.toLocaleString()} USD`} />
+                      {purchaseCalc.couponCode && (
+                        <>
+                          <Row label="Cupón" value={purchaseCalc.couponCode} />
+                          <Row label="Descuento" value={`${purchaseCalc.discountPercent}%`} />
+                          <Row label="Ahorro" value={`$${purchaseCalc.discountAmount.toLocaleString()} USD`} />
+                          <div className="border-t border-dark-border/50 pt-2">
+                            <Row label="Total a pagar" value={`$${purchaseCalc.finalAmount.toLocaleString()} USD`} />
+                          </div>
+                        </>
+                      )}
+                      <Row label="XLK estimados" value={`${purchaseCalc.xlkAmount.toLocaleString()} XLK`} />
+                      <Row label="Wallet de destino" value={`${TREASURY_WALLET.slice(0, 4)}...${TREASURY_WALLET.slice(-4)}`} />
                     </div>
                   </div>
                 )}
@@ -322,11 +379,7 @@ function CopyButton({ text }) {
       className="text-gray-400 hover:text-electric-blue transition-colors shrink-0"
       title="Copiar dirección completa"
     >
-      {copied ? (
-        <Check size={14} className="text-green-400" />
-      ) : (
-        <Copy size={14} />
-      )}
+      {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
     </button>
   )
 }

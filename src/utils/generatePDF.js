@@ -64,6 +64,15 @@ export async function generatePDF(ticket) {
     { label: 'Monto USD', value: `$${ticket.montoUSD.toLocaleString()} USD` },
     { label: 'Monto SOL', value: `${ticket.montoSOL.toFixed(6)} SOL` },
     { label: 'XLK Estimados', value: `${ticket.xlkEstimados.toLocaleString()} XLK` },
+    ...(ticket.couponCode
+      ? [
+          { label: 'Cupón', value: ticket.couponCode },
+          { label: 'Descuento', value: `${ticket.discountPercent}%` },
+          { label: 'Ahorro', value: `$${ticket.discountAmount.toLocaleString()} USD` },
+          { label: 'Pago realizado', value: `$${ticket.montoUSD.toLocaleString()} USD` },
+          { label: 'XLK asignados', value: `${ticket.xlkEstimados.toLocaleString()} XLK` },
+        ]
+      : []),
     { label: 'Hash Blockchain', value: ticket.txHash },
   ]
 

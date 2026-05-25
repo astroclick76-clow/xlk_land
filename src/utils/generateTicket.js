@@ -11,10 +11,16 @@ export function createTicketData(result) {
     fecha: new Date().toISOString(),
     walletComprador: result.wallet,
     walletTesorería: result.treasuryWallet,
-    montoUSD: result.usdAmount,
+    montoUSD: result.finalUsdAmount ?? result.usdAmount,
     montoSOL: result.solAmount,
     xlkEstimados: result.xlkAmount,
     txHash: result.signature,
     estado: 'Confirmada',
+    ...(result.couponCode && {
+      couponCode: result.couponCode,
+      discountPercent: result.discountPercent,
+      discountAmount: result.discountAmount,
+      montoOriginalUSD: result.usdAmount,
+    }),
   }
 }

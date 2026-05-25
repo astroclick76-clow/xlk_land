@@ -98,17 +98,42 @@ export default function PurchaseTicket({ ticket, onClose }) {
             label="Wallet Tesorería"
             value={abbreviate(ticket.walletTesorería)}
           />
-          <TicketRow
-            label="Monto USD"
-            value={`$${ticket.montoUSD.toLocaleString()} USD`}
-          />
+          {ticket.couponCode ? (
+            <>
+              <TicketRow
+                label="Monto original"
+                value={`$${ticket.montoOriginalUSD.toLocaleString()} USD`}
+              />
+              <TicketRow label="Cupón" value={ticket.couponCode} />
+              <TicketRow label="Descuento" value={`${ticket.discountPercent}%`} />
+              <TicketRow
+                label="Ahorro"
+                value={`$${ticket.discountAmount.toLocaleString()} USD`}
+              />
+              <TicketRow
+                label="Pago realizado"
+                value={`$${ticket.montoUSD.toLocaleString()} USD`}
+              />
+              <TicketRow
+                label="XLK asignados"
+                value={`${ticket.xlkEstimados.toLocaleString()} XLK`}
+              />
+            </>
+          ) : (
+            <>
+              <TicketRow
+                label="Monto USD"
+                value={`$${ticket.montoUSD.toLocaleString()} USD`}
+              />
+              <TicketRow
+                label="XLK Estimados"
+                value={`${ticket.xlkEstimados.toLocaleString()} XLK`}
+              />
+            </>
+          )}
           <TicketRow
             label="Monto SOL"
             value={`${ticket.montoSOL.toFixed(6)} SOL`}
-          />
-          <TicketRow
-            label="XLK Estimados"
-            value={`${ticket.xlkEstimados.toLocaleString()} XLK`}
           />
           <TicketRow label="Estado" value="Confirmada" />
         </div>
