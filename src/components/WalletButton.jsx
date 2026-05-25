@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { ArrowRight, Loader2, Wallet } from 'lucide-react'
 import usePhantomWallet from '../hooks/usePhantomWallet'
 import WalletModal from './WalletModal'
+import PurchaseModal from './PurchaseModal'
 import Toast from './Toast'
 
 export default function WalletButton() {
@@ -13,7 +14,8 @@ export default function WalletButton() {
     abbreviateAddress,
   } = usePhantomWallet()
 
-  const [showModal, setShowModal] = useState(false)
+  const [showInstallModal, setShowInstallModal] = useState(false)
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false)
   const [toast, setToast] = useState({ message: '', type: 'info', visible: false })
 
   const showToast = useCallback((message, type) => {
@@ -21,10 +23,13 @@ export default function WalletButton() {
   }, [])
 
   const handleClick = async () => {
-    if (status === 'connected') return
+    if (status === 'connected') {
+      setShowPurchaseModal(true)
+      return
+    }
 
     if (!isPhantomInstalled) {
-      setShowModal(true)
+      setShowInstallModal(true)
       return
     }
 
@@ -33,7 +38,7 @@ export default function WalletButton() {
     if (result.success) {
       showToast('Wallet Phantom conectada correctamente', 'success')
     } else if (!result.installed) {
-      setShowModal(true)
+      setShowInstallModal(true)
     }
   }
 
@@ -62,7 +67,15 @@ export default function WalletButton() {
         <div className="absolute inset-0 bg-gradient-to-r from-neon-purple to-electric-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </button>
 
-      <WalletModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <WalletModal
+        isOpen={showInstallModal}
+        onClose={() => setShowInstallModal(false)}
+      />
+
+      <PurchaseModal
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+      />
 
       <Toast
         message={toast.message}
