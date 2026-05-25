@@ -56,7 +56,7 @@ export default function Proyecto() {
             El <span className="text-gradient">Proyecto</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Xelvatika es un desarrollo turístico y habitacional de <strong className="text-white">66 hectáreas</strong> ubicado en Yucatán, que integra naturaleza, tecnología y exclusividad.
+            Xelvatika es un desarrollo turístico y habitacional de <strong className="text-white">66.5 hectáreas</strong> ubicado en Yucatán, que integra naturaleza, tecnología y exclusividad.
           </p>
         </motion.div>
 
