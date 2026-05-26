@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Timer, ShieldCheck, Gift } from 'lucide-react'
 import WalletButton from './WalletButton'
+import ManualTransferCard from './ManualTransferCard'
 
 export default function Preventa() {
   const [timeLeft, setTimeLeft] = useState({ days: 30, hours: 0, minutes: 0, seconds: 0 })
@@ -131,6 +132,7 @@ export default function Preventa() {
               ))}
             </div>
             <WalletButton />
+            <ManualTransferCard />
           </div>
         </motion.div>
       </div>

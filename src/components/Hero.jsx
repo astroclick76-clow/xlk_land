@@ -124,7 +124,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-r from-neon-purple to-electric-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </button>
           <button
-            onClick={() => scrollTo('proyecto')}
+            onClick={() => window.open('https://xelvatika.com/', '_blank', 'noopener,noreferrer')}
             className="px-8 py-4 border border-electric-blue/50 text-electric-blue rounded-full font-semibold text-lg transition-all duration-300 hover:bg-electric-blue/10 hover:border-electric-blue hover:neon-glow-blue"
           >
             Conocer el Proyecto
