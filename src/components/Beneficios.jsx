@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Percent, Wallet, Crown, Vote, Lock, ArrowLeftRight, Building2, Gift } from 'lucide-react'
 
 const images = import.meta.glob('/public/assets/images/*.png', { eager: true, query: '?url' })
+const imgKeys = Object.keys(images)
+const lifestyleKey = imgKeys.find(k => k.includes('lifestyle'))
+const lifestyleImg = lifestyleKey ? (images[lifestyleKey].default || images[lifestyleKey]) : ''
 
 const beneficios = [
   {
@@ -56,16 +58,6 @@ const beneficios = [
 ]
 
 export default function Beneficios() {
-  const [lifestyleImg, setLifestyleImg] = useState('')
-
-  useEffect(() => {
-    const imgKeys = Object.keys(images)
-    const lifestyle = imgKeys.find(k => k.includes('lifestyle'))
-    if (lifestyle) {
-      setLifestyleImg(images[lifestyle].default || images[lifestyle])
-    }
-  }, [])
-
   return (
     <section id="beneficios" className="relative py-24 md:py-32 px-4">
       <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-[#07070f] to-deep-black pointer-events-none" />

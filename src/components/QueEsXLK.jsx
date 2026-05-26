@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Ticket, DollarSign, Star, Vote, Lock, ArrowLeftRight, Handshake, Users } from 'lucide-react'
+import { Ticket, DollarSign, Star, Vote, Lock, ArrowLeftRight } from 'lucide-react'
 
 const images = import.meta.glob('/public/assets/images/*.png', { eager: true, query: '?url' })
+const imgKeys = Object.keys(images)
+const tokenKey = imgKeys.find(k => k.includes('token'))
+const tokenImg = tokenKey ? (images[tokenKey].default || images[tokenKey]) : ''
 
 const usos = [
   { icon: Ticket, label: 'Descuentos exclusivos' },
@@ -14,16 +16,6 @@ const usos = [
 ]
 
 export default function QueEsXLK() {
-  const [tokenImg, setTokenImg] = useState('')
-
-  useEffect(() => {
-    const imgKeys = Object.keys(images)
-    const token = imgKeys.find(k => k.includes('token'))
-    if (token) {
-      setTokenImg(images[token].default || images[token])
-    }
-  }, [])
-
   return (
     <section id="que-es" className="relative py-24 md:py-32 px-4">
       <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-[#080812] to-deep-black pointer-events-none" />

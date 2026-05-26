@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Infinity, TrendingDown } from 'lucide-react'
+import { Infinity as InfinityIcon, TrendingDown } from 'lucide-react'
 
 const TOKENOMICS = {
   totalSupply: '21,000,000',
@@ -86,7 +86,7 @@ export default function Tokenomics() {
               className="glass rounded-xl p-6"
             >
               <div className="flex items-center gap-3 mb-4">
-                <Infinity className="w-6 h-6 text-electric-blue" />
+                <InfinityIcon className="w-6 h-6 text-electric-blue" />
                 <h4 className="text-white font-bold">Token Finito</h4>
               </div>
               <p className="text-gray-400 text-sm">Oferta máxima fija de 21 millones. No se crearán más tokens.</p>

@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Wind, Droplets, Leaf, Flame, Palmtree, Tent, Waves } from 'lucide-react'
 
 const images = import.meta.glob('/public/assets/images/*.png', { eager: true, query: '?url' })
+const imgKeys = Object.keys(images)
+const parkKey = imgKeys.find(k => k.includes('parks'))
+const parkImg = parkKey ? (images[parkKey].default || images[parkKey]) : ''
 
 const parques = [
   { icon: Wind, nombre: 'Parque Aire', desc: 'Tirolesas y actividades aéreas', color: 'from-sky-400 to-blue-500' },
@@ -31,16 +33,6 @@ const extras = [
 ]
 
 export default function Proyecto() {
-  const [parkImg, setParkImg] = useState('')
-
-  useEffect(() => {
-    const imgKeys = Object.keys(images)
-    const park = imgKeys.find(k => k.includes('parks'))
-    if (park) {
-      setParkImg(images[park].default || images[park])
-    }
-  }, [])
-
   return (
     <section id="proyecto" className="relative py-24 md:py-32 px-4">
       <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-[#060610] to-deep-black pointer-events-none" />

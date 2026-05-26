@@ -2,7 +2,6 @@ export function isMobileDevice() {
   if (typeof navigator === 'undefined') return false
 
   const ua = navigator.userAgent || ''
-  const platform = navigator.platform || ''
 
   const mobilePatterns = [
     /Android/i,

@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ExternalLink, Wallet, Smartphone } from 'lucide-react'
-import { getPhantomDeepLink, redirectToPhantom } from '../utils/phantomDeepLink'
+import { redirectToPhantom } from '../utils/phantomDeepLink'
 
 export default function WalletModal({ isOpen, onClose, mode = 'install', mobileOS = null }) {
   return (
@@ -84,7 +84,6 @@ function InstallContent({ onClose }) {
 }
 
 function MobileDeepLinkContent({ mobileOS, onClose }) {
-  const deepLink = getPhantomDeepLink()
   const osLabel = mobileOS === 'iOS' ? 'iPhone' : 'Android'
 
   return (

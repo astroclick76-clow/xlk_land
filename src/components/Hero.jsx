@@ -1,9 +1,14 @@
-import { useEffect, useState, useRef } from 'react'
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronDown, ArrowRight, Shield, Trees, Mountain, Users } from 'lucide-react'
 
 const images = import.meta.glob('/public/assets/images/*.png', { eager: true, query: '?url' })
 const videos = import.meta.glob('/public/assets/video/**/*.{mp4,webm,mov}', { eager: true, query: '?url' })
+
+const videoKeys = Object.keys(videos)
+const videoSrc = videoKeys.length > 0 ? (videos[videoKeys[0]].default || videos[videoKeys[0]]) : ''
+const coverKey = Object.keys(images).find(k => k.includes('cover'))
+const coverImg = coverKey ? (images[coverKey].default || images[coverKey]) : ''
 
 const metrics = [
   { icon: Trees, label: 'Hectáreas', value: '66.5' },
@@ -13,24 +18,7 @@ const metrics = [
 ]
 
 export default function Hero() {
-  const [videoSrc, setVideoSrc] = useState('')
-  const [coverImg, setCoverImg] = useState('')
   const videoRef = useRef(null)
-
-  useEffect(() => {
-    const videoKeys = Object.keys(videos)
-    if (videoKeys.length > 0) {
-      setVideoSrc(videos[videoKeys[0]].default || videos[videoKeys[0]])
-    }
-    const imgKeys = Object.keys(images)
-    const cover = imgKeys.find(k => k.includes('cover'))
-    if (cover) {
-      setCoverImg(images[cover].default || images[cover])
-    }
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.7
-    }
-  }, [])
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -45,6 +33,7 @@ export default function Hero() {
           muted
           loop
           playsInline
+          onLoadedMetadata={() => { if (videoRef.current) videoRef.current.playbackRate = 0.7 }}
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={videoSrc} type="video/mp4" />
@@ -137,7 +126,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.9 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl"
         >
-          {metrics.map((m, i) => (
+          {metrics.map((m) => (
             <div key={m.label} className="glass rounded-xl p-4 text-center group hover:border-electric-blue/30 transition-all duration-300">
               <m.icon className="w-5 h-5 text-electric-blue mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <div className="text-xl md:text-2xl font-black text-white">{m.value}</div>
