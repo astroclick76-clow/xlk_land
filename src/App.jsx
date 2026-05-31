@@ -10,6 +10,7 @@ import MecanismoValor from './components/MecanismoValor'
 import VentajasBlockchain from './components/VentajasBlockchain'
 import FAQ from './components/FAQ'
 import Comunidad from './components/Comunidad'
+import PhantomTutorial from './components/PhantomTutorial'
 import Footer from './components/Footer'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <VentajasBlockchain />
         <FAQ />
         <Comunidad />
+        <PhantomTutorial />
         <Footer />
       </div>
     </div>
